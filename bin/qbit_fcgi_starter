@@ -42,7 +42,7 @@ if ($args{'daemonize'}) {
 
 my $proc_manager = FCGI::ProcManager->new(
     {
-        n_processes => $args{'workers'} || 10,
+        n_processes => (exists($args{'workers'}) ? $args{'workers'} : 10),
         pm_title => 'qbit_fcgi_starter',
         ($args{'pid'} ? (pid_fname => $args{'pid'}) : ())
     }
