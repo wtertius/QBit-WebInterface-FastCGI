@@ -1,3 +1,11 @@
+libqbit-webinterface-fastcgi-perl (0.003) raring; urgency=low
+
+  * fix
+
+  * fix response
+
+ -- Sergei Svistunov <sergei-svistunov@yandex.ru>  Thu, 30 Jan 2014 18:22:31 +0400
+
 libqbit-webinterface-fastcgi-perl (0.002) raring; urgency=low
 
   * Add ability to run qbit_fcgi_starter with 0 workers.
