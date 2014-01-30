@@ -41,7 +41,7 @@ sub run {
     my $data_ref = \$self->response->data;
     if (defined($data_ref)) {
         $data_ref = $$data_ref if ref($$data_ref);
-        utf8::encode($$data_ref) if defined($$data_ref) && !$self->response->filename;
+        utf8::encode($$data_ref) if defined($$data_ref) && utf8::is_utf8($$data_ref);
     }
     $data_ref = \'' unless defined($$data_ref);
 
@@ -61,7 +61,7 @@ sub run {
           . 'attachment; filename="'
           . $self->_escape_filename($self->response->filename) . "\"\n"
           if $self->response->filename;
-        print "\n" . $$data_ref;
+        print "\n", $$data_ref;
     } elsif ($self->response->status == 301 || $self->response->status == 302) {
         print 'Location: ' . $self->response->location . "\n\n";
     } else {
