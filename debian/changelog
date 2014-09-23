@@ -1,3 +1,11 @@
+libqbit-webinterface-fastcgi-perl (0.004) raring; urgency=low
+
+  * Fix description of --process-name parameter.
+
+  * Add --process-name option to starter.
+
+ -- Sergei Svistunov <sergei-svistunov@yandex.ru>  Tue, 23 Sep 2014 18:10:37 +0400
+
 libqbit-webinterface-fastcgi-perl (0.003) raring; urgency=low
 
   * fix
