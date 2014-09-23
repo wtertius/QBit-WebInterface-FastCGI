@@ -10,8 +10,8 @@ use Proc::Daemon;
 
 my %args = ();
 GetOptions(
-    \%args,     'help|?',    'daemonize!', 'lib-path=s@', 'workers=i', 'pid=s',
-    'listen=s', 'backlog=i', 'user=s',     'max-requests=i'
+    \%args,     'help|?',    'daemonize!', 'lib-path=s@',    'workers=i',     'pid=s',
+    'listen=s', 'backlog=i', 'user=s',     'process-name=s', 'max-requests=i'
 );
 
 pod2usage(1) if $args{'help'} || !exists($ARGV[0]);
@@ -43,7 +43,7 @@ if ($args{'daemonize'}) {
 my $proc_manager = FCGI::ProcManager->new(
     {
         n_processes => (exists($args{'workers'}) ? $args{'workers'} : 10),
-        pm_title => 'qbit_fcgi_starter',
+        pm_title => $args{'process-name'} || 'qbit_fcgi_starter',
         ($args{'pid'} ? (pid_fname => $args{'pid'}) : ())
     }
 );
@@ -84,6 +84,10 @@ Class "class_name" must be QBit::WebInterface::FastCGI descendant.
 =item B<--daemonize>
 
 Use if you want run as daemon.
+
+=item B<--process-name>
+
+Change process manager process name.
 
 =item B<--lib-path>
 
