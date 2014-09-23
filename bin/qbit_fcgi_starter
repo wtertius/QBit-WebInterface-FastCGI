@@ -87,7 +87,7 @@ Use if you want run as daemon.
 
 =item B<--process-name>
 
-Use if you want to change daemonized process name.
+Change process manager process name.
 
 =item B<--lib-path>
 
