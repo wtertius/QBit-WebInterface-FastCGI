@@ -1,4 +1,4 @@
-libqbit-webinterface-fastcgi-perl (0.004) raring; urgency=low
+libtertiusqbit-webinterface-fastcgi-perl (0.004) raring; urgency=low
 
   * Fix description of --process-name parameter.
 
@@ -6,7 +6,7 @@ libqbit-webinterface-fastcgi-perl (0.004) raring; urgency=low
 
  -- Sergei Svistunov <sergei-svistunov@yandex.ru>  Tue, 23 Sep 2014 18:10:37 +0400
 
-libqbit-webinterface-fastcgi-perl (0.003) raring; urgency=low
+libtertiusqbit-webinterface-fastcgi-perl (0.003) raring; urgency=low
 
   * fix
 
@@ -14,13 +14,13 @@ libqbit-webinterface-fastcgi-perl (0.003) raring; urgency=low
 
  -- Sergei Svistunov <sergei-svistunov@yandex.ru>  Thu, 30 Jan 2014 18:22:31 +0400
 
-libqbit-webinterface-fastcgi-perl (0.002) raring; urgency=low
+libtertiusqbit-webinterface-fastcgi-perl (0.002) raring; urgency=low
 
-  * Add ability to run qbit_fcgi_starter with 0 workers.
+  * Add ability to run tertiusqbit_fcgi_starter with 0 workers.
 
  -- Sergei Svistunov <sergei-svistunov@yandex.ru>  Wed, 25 Dec 2013 14:51:33 +0400
 
-libqbit-webinterface-fastcgi-perl (0.001) raring; urgency=low
+libtertiusqbit-webinterface-fastcgi-perl (0.001) raring; urgency=low
 
   * Initial commit
 
