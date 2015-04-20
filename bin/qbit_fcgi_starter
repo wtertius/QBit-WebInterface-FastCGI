@@ -11,7 +11,8 @@ use Proc::Daemon;
 my %args = ();
 GetOptions(
     \%args,     'help|?',    'daemonize!', 'lib-path=s@',    'workers=i',     'pid=s',
-    'listen=s', 'backlog=i', 'user=s',     'process-name=s', 'max-requests=i'
+    'listen=s', 'backlog=i', 'user=s',     'process-name=s', 'max-requests=i',
+    'daemon_stdout=s', 'daemon_stderr=s',
 );
 
 pod2usage(1) if $args{'help'} || !exists($ARGV[0]);
@@ -26,6 +27,8 @@ $class_fname =~ s/::/\//g;
 $class_fname .= '.pm';
 require $class_fname;
 
+my $web_interface = $ARGV[0]->new();
+
 if ($args{'daemonize'}) {
     my $uid;
     if ($args{'user'}) {
@@ -36,9 +39,15 @@ if ($args{'daemonize'}) {
         }
     }
 
-    my $daemon = Proc::Daemon->new(($uid ? (setuid => $uid) : ()));
+    $args{daemon_stdout} &&= '>>'.$args{daemon_stdout};
+    $args{daemon_stderr} &&= '>>'.$args{daemon_stderr};
+
+    my $daemon = Proc::Daemon->new(($uid ? (setuid => $uid) : ()), child_STDOUT => $args{daemon_stdout}, child_STDERR => $args{daemon_stderr});
     $daemon->Init();
 }
+
+my $socket = FCGI::OpenSocket($args{'listen'} || ':9000', $args{'backlog'} || 5);
+my $request = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, \%ENV, $socket);
 
 my $proc_manager = FCGI::ProcManager->new(
     {
@@ -47,11 +56,6 @@ my $proc_manager = FCGI::ProcManager->new(
         ($args{'pid'} ? (pid_fname => $args{'pid'}) : ())
     }
 );
-
-my $socket = FCGI::OpenSocket($args{'listen'} || ':9000', $args{'backlog'} || 5);
-my $request = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, \%ENV, $socket);
-
-my $web_interface = $ARGV[0]->new();
 
 $proc_manager->pm_manage();
 
