@@ -1,3 +1,9 @@
+libtertiusqbit-webinterface-fastcgi-perl (0.006) raring; urgency=low
+
+  * Create web interface object before daemonizing.
+
+ -- Dmitry Lukiyanchuk <tertius@yandex-team.ru>  Mon, 20 Apr 2015 16:16:05 +0300
+
 libtertiusqbit-webinterface-fastcgi-perl (0.005) raring; urgency=low
 
   * Rename debian package
