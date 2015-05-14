@@ -10,9 +10,11 @@ use Proc::Daemon;
 
 my %args = ();
 GetOptions(
-    \%args,     'help|?',    'daemonize!', 'lib-path=s@',    'workers=i',     'pid=s',
-    'listen=s', 'backlog=i', 'user=s',     'process-name=s', 'max-requests=i',
-    'daemon_stdout=s', 'daemon_stderr=s',
+    \%args,     'help|?',    'daemonize!', 'lib-path=s@',
+    'workers=i', 'max-requests=i', 'memory-limit=i',
+    'listen=s', 'backlog=i',
+    'pid=s',   'process-name=s', 'user=s',
+    'daemon-stdout=s', 'daemon-stderr=s',
 );
 
 pod2usage(1) if $args{'help'} || !exists($ARGV[0]);
@@ -39,10 +41,10 @@ if ($args{'daemonize'}) {
         }
     }
 
-    $args{daemon_stdout} &&= '>>'.$args{daemon_stdout};
-    $args{daemon_stderr} &&= '>>'.$args{daemon_stderr};
+    $args{'daemon-stdout'} &&= '>>'.$args{'daemon-stdout'};
+    $args{'daemon-stderr'} &&= '>>'.$args{'daemon-stderr'};
 
-    my $daemon = Proc::Daemon->new(($uid ? (setuid => $uid) : ()), child_STDOUT => $args{daemon_stdout}, child_STDERR => $args{daemon_stderr});
+    my $daemon = Proc::Daemon->new(($uid ? (setuid => $uid) : ()), child_STDOUT => $args{'daemon-stdout'}, child_STDERR => $args{'daemon-stderr'});
     $daemon->Init();
 }
 
@@ -64,10 +66,17 @@ while ($request->Accept() >= 0) {
     $proc_manager->pm_pre_dispatch();
     $web_interface->run($request);
     $proc_manager->pm_post_dispatch();
+
     exit(0) if $args{'max-requests'} && ++$n >= $args{'max-requests'};
+    exit(0) if memory_limit_is_exceeded();
 }
 
 FCGI::CloseSocket($socket);
+
+
+sub memory_limit_is_exceeded {
+    return $args{'memory-limit'} && (memory_consumption()->{rss} / 1024) >= $args{'memory-limit'}
+}
 
 __END__
 
@@ -122,6 +131,18 @@ Set daemon owner. (Only wiith --daemonize and run under root).
 =item B<--max-requests>
 
 Set max requests per child.
+
+=item B<--memory-limit>
+
+Set RSS memory limit per child in MB. Child will finish safely if exceeds.
+
+=item B<--daemon-stdout>
+
+STDOUT of daemonized FCGI Process Manager.
+
+=item B<--daemon-stderr>
+
+STDERR of daemonized FCGI Process Manager.
 
 =item B<--help>
 
