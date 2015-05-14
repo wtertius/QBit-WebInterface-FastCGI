@@ -1,3 +1,9 @@
+libtertiusqbit-webinterface-fastcgi-perl (0.007) raring; urgency=low
+
+  * Add memory limit option to qbit_fcgi_starter.
+
+ -- Dmitry Lukiyanchuk <tertius@yandex-team.ru>  Thu, 14 May 2015 13:52:35 +0300
+
 libtertiusqbit-webinterface-fastcgi-perl (0.006) raring; urgency=low
 
   * Create web interface object before daemonizing.
